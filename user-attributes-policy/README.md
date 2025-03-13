@@ -20,9 +20,7 @@ If Keycloak is running locally, move the JAR to Keycloak’s provider directory:
 
 cp ./target/user-attributes-policy-0.0.1.jar /opt/keycloak/providers/
 Step 3: Restart Keycloak
-sh
-Copy
-Edit
+
 docker restart keycloak
 Or if running locally:
 
@@ -53,9 +51,6 @@ To obtain the Client ID of the test client:
 curl -X GET "http://172.16.102.238:8082/admin/realms/testing/clients?clientId=test" \
      -H "Authorization: Bearer {ACCESS_TOKEN}"
 Response Example:
-json
-Copy
-Edit
 [
     {
         "id": "77eca52c-5e7e-41d9-8581-dc098c022c04",
@@ -75,11 +70,9 @@ curl -X POST "http://172.16.102.238:8082/admin/realms/testing/clients/77eca52c-5
            "name": "user attribute policy",
            "type": "user-attribute",  //fixed value, you can not change this.
            "description": "Custom regex policy",
-           "config": {
-               "allowedAttributes": "test-value, custom-value", //A comma-separated list of values (test-value, custom-value) that the user must have in their attributes.
-               "userAttributeKey": "customField", //The key (customField) in the user's attributes that will be checked against allowedAttributes.
-               "matchAll": "true" // A boolean (true or false) that determines if all values in allowedAttributes must match (true), or if at least one match is sufficient (false).
-           }
+           "allowedAttributes": "test-value, custom-value", //A comma-separated list of values (test-value, custom-value) that the user must have in their attributes.
+           "userAttributeKey": "customField", //The key (customField) in the user's attributes that will be checked against allowedAttributes.
+           "matchAll": "true" // A boolean (true or false) that determines if all values in allowedAttributes must match (true), or if at least one match is sufficient (false).
         }'
 
 
