@@ -17,15 +17,15 @@ public class UnifiedNationalNumberController {
     private UnifiedNationalNumberService service;
 
     @GetMapping
-    public ResponseEntity<ResponseDto<UnifiedNationalNumberResponseDto>> getUnifiedNationalNumbers() {
+    public ResponseEntity<UnifiedNationalNumberResponseDto> getUnifiedNationalNumbers() {
         UnifiedNationalNumberResponseDto responseData = service.fetchNumbers();
 
-        ResponseDto<UnifiedNationalNumberResponseDto> response = new ResponseDto<>(
-                "success",
-                "Unified national numbers fetched successfully",
-                responseData
-        );
+//        ResponseDto<UnifiedNationalNumberResponseDto> response = new ResponseDto<>(
+//                "success",
+//                "Unified national numbers fetched successfully",
+//                responseData
+//        );
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(responseData);
     }
 }
