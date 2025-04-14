@@ -1,0 +1,76 @@
+CREATE TABLE Establishments (
+    EstablishmentID INT PRIMARY KEY,
+    NationalUnifiedNumber NVARCHAR(50),
+    Establishment_Name NVARCHAR(255),
+    LaborOfficeId INT,
+    SequenceNumber INT,
+    UnifiedNumberID NVARCHAR(50),
+    IDNumber NVARCHAR(50),
+    SubscriptionStatusID INT,
+    ExpiryDate DATE,
+    UserType NVARCHAR(50),
+    HasAccess BIT,
+    IsMainBranch BIT
+);
+
+select * from Establishments
+
+
+INSERT INTO Establishments (
+    EstablishmentID, NationalUnifiedNumber, Establishment_Name, LaborOfficeId,
+    SequenceNumber, UnifiedNumberID, IDNumber, SubscriptionStatusID,
+    ExpiryDate, UserType, HasAccess, IsMainBranch
+)
+VALUES
+(2451489, '7013313155', N'مؤسسة ظهبر محمد احمد الهجري التجارية', 9, 174945, 'mhryrehman@gmail.com', 'mhryrehman@gmail.com', 2, '2025-03-13', NULL, 1, 0);
+
+
+
+CREATE PROCEDURE [dbo].[Establishments_Get_All_User_Type_QIWA_AS_A_Service]
+    @p_IDNumber NVARCHAR(50),
+    @p_UserSubScriptions INT = NULL,
+    @p_IsExcludeEconomicActivity BIT = NULL,
+    @p_EstablishmentName NVARCHAR(255) = NULL,
+    @p_UnifiedNumber NVARCHAR(50) = NULL,
+    @p_LaborOfficeId INT = NULL,
+    @p_SequenceNumber INT = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+        TotalRecordCount = COUNT(*) OVER (),
+        UserType,                        -- assuming exists in your table
+        HasAccess,                       -- assuming exists in your table
+        EstablishmentID,
+        NationalUnifiedNumber,
+        Establishment_Name,
+        LaborOfficeId,
+        SequenceNumber,
+        UnifiedNumberID,
+        IDNumber,
+        SubscriptionStatusID,
+        ExpiryDate,
+        IsMainBranch                     -- assuming exists in your table
+    FROM 
+        Establishments
+    WHERE 
+        IDNumber = @p_IDNumber
+        AND (@p_UserSubScriptions IS NULL OR SubscriptionStatusID = @p_UserSubScriptions)
+        AND (@p_EstablishmentName IS NULL OR Establishment_Name LIKE '%' + @p_EstablishmentName + '%')
+        AND (@p_UnifiedNumber IS NULL OR UnifiedNumberID = @p_UnifiedNumber)
+        AND (@p_LaborOfficeId IS NULL OR LaborOfficeId = @p_LaborOfficeId)
+        AND (@p_SequenceNumber IS NULL OR SequenceNumber = @p_SequenceNumber)
+        -- Optional condition for economic activity exclusion, depends on your schema
+        -- AND (@p_IsExcludeEconomicActivity IS NULL OR EconomicActivity = 'SomeValue')
+END
+
+
+EXEC   Establishments_Get_All_User_Type_QIWA_AS_A_Service
+           @p_IDNumber = 'mhryrehman@gmail.com',
+           @p_UserSubScriptions = NULL,
+           @p_IsExcludeEconomicActivity = NULL,
+           @p_EstablishmentName = NULL,
+           @p_UnifiedNumber = NULL,
+           @p_LaborOfficeId = NULL,
+           @p_SequenceNumber = NULL
