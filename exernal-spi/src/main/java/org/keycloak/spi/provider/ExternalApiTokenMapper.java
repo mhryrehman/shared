@@ -12,6 +12,7 @@ import org.keycloak.protocol.oidc.mappers.UserInfoTokenMapper;
 import org.keycloak.provider.ProviderConfigProperty;
 import org.keycloak.representations.AccessToken;
 import org.keycloak.spi.service.ExternalApiService;
+import org.keycloak.spi.util.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,18 +106,18 @@ public class ExternalApiTokenMapper extends AbstractOIDCProtocolMapper
 
         try {
             ExternalApiService apiService = new ExternalApiService(apiUrl, clientId, clientSecret, session);
-            Map<String, Object> externalData = apiService.fetchData();
+            if (null != userSession && null != userSession.getUser()) {
+                Map<String, Object> externalData = apiService.fetchData(userSession.getUser().getUsername());
 
-            if (externalData == null || externalData.isEmpty()) {
-                logger.info("External API Token Mapper: No data returned from external API.");
-                return token;
+                if (externalData == null || externalData.isEmpty()) {
+                    logger.info("External API Token Mapper: No data returned from external API.");
+                    return token;
+                }
+
+                logger.infof("External API Token Mapper: Adding claims to the token.");
+                token.getOtherClaims().put(Constant.UNIFIED_NATIONAL_NUMBERS, externalData.get(Constant.UNIFIED_NATIONAL_NUMBERS));
             }
 
-            logger.infof("External API Token Mapper: Adding %d claims to the token.", externalData.size());
-
-            for (Map.Entry<String, Object> entry : externalData.entrySet()) {
-                token.getOtherClaims().put(entry.getKey(), entry.getValue());
-            }
         } catch (Exception e) {
             logger.error("External API Token Mapper: Error calling external API", e);
         }

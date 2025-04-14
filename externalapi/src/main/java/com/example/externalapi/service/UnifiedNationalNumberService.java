@@ -13,8 +13,8 @@ public class UnifiedNationalNumberService {
     @Autowired
     private UnifiedNationalNumberRepository repository;
 
-    public UnifiedNationalNumberResponseDto fetchNumbers() {
-        List<String> numbers = repository.getUnifiedNationalNumbers();
+    public UnifiedNationalNumberResponseDto fetchNumbers(String userId) {
+        List<String> numbers = repository.getUnifiedNationalNumbers(userId);
         return new UnifiedNationalNumberResponseDto(numbers);
     }
 }

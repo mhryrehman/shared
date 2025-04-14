@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Profile;
 import java.util.logging.Logger;
 
 @Component
-@Profile("qa")
+@Profile("stg")
 public class StoreProcedureInitializerMSsql implements CommandLineRunner {
 
     private static final Logger logger = Logger.getLogger(StoreProcedureInitializerMSsql.class.getName());

@@ -1,15 +1,18 @@
 package com.example.externalapi.response;
-public class ResponseDto<T> {
+
+import java.util.List;
+
+public class ResponseDto {
     private String status;
     private String message;
-    private T data;
+    private List<String> unifiedNationalNumbers;
 
     public ResponseDto() {}
 
-    public ResponseDto(String status, String message, T data) {
+    public ResponseDto(String status, String message, List<String> unifiedNationalNumbers) {
         this.status = status;
         this.message = message;
-        this.data = data;
+        this.unifiedNationalNumbers = unifiedNationalNumbers;
     }
 
     public String getStatus() {
@@ -28,11 +31,11 @@ public class ResponseDto<T> {
         this.message = message;
     }
 
-    public T getData() {
-        return data;
+    public List<String> getUnifiedNationalNumbers() {
+        return unifiedNationalNumbers;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public void setUnifiedNationalNumbers(List<String> unifiedNationalNumbers) {
+        this.unifiedNationalNumbers = unifiedNationalNumbers;
     }
 }
