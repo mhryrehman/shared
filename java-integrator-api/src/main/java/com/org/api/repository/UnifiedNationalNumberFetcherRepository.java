@@ -40,7 +40,7 @@ public class UnifiedNationalNumberFetcherRepository {
         List<String> list = new ArrayList<>();
 
         try {
-            SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, "1002112272", null, null, null, null, null, null);
+            SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, userId, null, null, null, null, null, null);
 
             while (rowSet.next()) {
                 String nationalUnifiedNumber = rowSet.getString("NationalUnifiedNumber");

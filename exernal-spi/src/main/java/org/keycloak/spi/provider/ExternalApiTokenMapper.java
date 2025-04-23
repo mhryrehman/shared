@@ -33,8 +33,6 @@ public class ExternalApiTokenMapper extends AbstractOIDCProtocolMapper
     public static final String PROVIDER_ID = "oidc-external-api-token-mapper";
     // Configuration keys
     public static final String CONFIG_API_URL = "external.api.url";
-    public static final String CONFIG_CLIENT_ID = "external.api.clientId";
-    public static final String CONFIG_CLIENT_SECRET = "external.api.clientSecret";
     private static final Logger logger = Logger.getLogger(ExternalApiTokenMapper.class);
     private static final List<ProviderConfigProperty> configProperties = new ArrayList<>();
 
@@ -45,20 +43,6 @@ public class ExternalApiTokenMapper extends AbstractOIDCProtocolMapper
         apiUrlProperty.setHelpText("Enter the URL of the external API that provides user data.");
         apiUrlProperty.setType(ProviderConfigProperty.STRING_TYPE);
         configProperties.add(apiUrlProperty);
-
-        ProviderConfigProperty clientIdProperty = new ProviderConfigProperty();
-        clientIdProperty.setName(CONFIG_CLIENT_ID);
-        clientIdProperty.setLabel("Client ID");
-        clientIdProperty.setHelpText("Enter the Client ID for authenticating with the external API.");
-        clientIdProperty.setType(ProviderConfigProperty.STRING_TYPE);
-        configProperties.add(clientIdProperty);
-
-        ProviderConfigProperty clientSecretProperty = new ProviderConfigProperty();
-        clientSecretProperty.setName(CONFIG_CLIENT_SECRET);
-        clientSecretProperty.setLabel("Client Secret");
-        clientSecretProperty.setHelpText("Enter the Client Secret for authenticating with the external API.");
-        clientSecretProperty.setType(ProviderConfigProperty.PASSWORD);
-        configProperties.add(clientSecretProperty);
     }
 
     @Override
@@ -96,16 +80,14 @@ public class ExternalApiTokenMapper extends AbstractOIDCProtocolMapper
                                             UserSessionModel userSession,
                                             ClientSessionContext clientSessionCtx) {
         String apiUrl = mappingModel.getConfig().get(CONFIG_API_URL);
-        String clientId = mappingModel.getConfig().get(CONFIG_CLIENT_ID);
-        String clientSecret = mappingModel.getConfig().get(CONFIG_CLIENT_SECRET);
 
-        if (apiUrl == null || clientId == null || clientSecret == null) {
-            logger.warn("External API Token Mapper: API URL, Client ID, or Client Secret is not configured. Skipping external API call.");
+        if (apiUrl == null) {
+            logger.warn("External API Token Mapper: API URL is not configured. Skipping external API call.");
             return token;
         }
 
         try {
-            ExternalApiService apiService = new ExternalApiService(apiUrl, clientId, clientSecret, session);
+            ExternalApiService apiService = new ExternalApiService(apiUrl, session);
             if (null != userSession && null != userSession.getUser()) {
                 Map<String, Object> externalData = apiService.fetchData(userSession.getUser().getUsername());
 

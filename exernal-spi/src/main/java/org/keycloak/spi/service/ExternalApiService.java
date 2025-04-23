@@ -17,14 +17,10 @@ public class ExternalApiService {
     private static final Logger logger = Logger.getLogger(ExternalApiService.class);
 
     private final String apiUrl;
-    private final String clientId;
-    private final String clientSecret;
     private final KeycloakSession session;
 
-    public ExternalApiService(String apiUrl, String clientId, String clientSecret, KeycloakSession session) {
+    public ExternalApiService(String apiUrl, KeycloakSession session) {
         this.apiUrl = apiUrl;
-        this.clientId = clientId;
-        this.clientSecret = clientSecret;
         this.session = session;
     }
 
@@ -37,7 +33,6 @@ public class ExternalApiService {
         try {
             // Build headers for the API call
             Map<String, String> headers = new HashMap<>();
-            headers.put("Authorization", "Basic " + HttpClientUtil.encodeBase64(clientId + ":" + clientSecret));
             headers.put("Accept", "application/json");
 
             String finalUrl = apiUrl + Constant.QUERY_PARAM_USER_ID + userName;
