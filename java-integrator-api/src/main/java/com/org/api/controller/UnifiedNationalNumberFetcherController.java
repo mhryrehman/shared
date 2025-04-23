@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/numbers")
+@RequestMapping("/api/v1/unified-national-numbers")
 public class UnifiedNationalNumberFetcherController {
 
     @Autowired

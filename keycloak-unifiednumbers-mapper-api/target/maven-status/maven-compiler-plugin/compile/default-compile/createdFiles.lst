@@ -1,0 +1,5 @@
+org\keycloak\spi\util\Constant.class
+org\keycloak\spi\provider\ExternalApiTokenMapper.class
+org\keycloak\spi\util\HttpClientUtil$1.class
+org\keycloak\spi\service\ExternalApiService.class
+org\keycloak\spi\util\HttpClientUtil.class
