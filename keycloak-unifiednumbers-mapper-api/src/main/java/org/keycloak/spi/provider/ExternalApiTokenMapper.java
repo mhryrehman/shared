@@ -11,6 +11,7 @@ import org.keycloak.protocol.oidc.mappers.OIDCIDTokenMapper;
 import org.keycloak.protocol.oidc.mappers.UserInfoTokenMapper;
 import org.keycloak.provider.ProviderConfigProperty;
 import org.keycloak.representations.AccessToken;
+import org.keycloak.spi.service.AuthorizationService;
 import org.keycloak.spi.service.ExternalApiService;
 import org.keycloak.spi.util.Constant;
 
@@ -100,6 +101,13 @@ public class ExternalApiTokenMapper extends AbstractOIDCProtocolMapper
 
                 logger.infof("External API Token Mapper: Adding claims to the token.");
                 token.getOtherClaims().put(Constant.UNIFIED_NATIONAL_NUMBERS, externalData.get(Constant.UNIFIED_NATIONAL_NUMBERS));
+
+                //fetch user's permissions from Keycloak authorization data
+                AuthorizationService authorizationService = new AuthorizationService();
+                List<Map<String, String>> userPermissions = authorizationService.fetchUserPermissions(session, userSession, clientSessionCtx);
+                if (!userPermissions.isEmpty()) {
+                    token.getOtherClaims().put("permissions", userPermissions);
+                }
             }
 
         } catch (Exception e) {
