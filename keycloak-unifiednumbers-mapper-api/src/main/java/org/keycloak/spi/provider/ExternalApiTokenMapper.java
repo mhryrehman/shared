@@ -94,8 +94,9 @@ public class ExternalApiTokenMapper extends AbstractOIDCProtocolMapper
             if (null != userSession && null != userSession.getUser()) {
                 Map<String, Object> externalData = apiService.fetchData(userSession.getUser().getUsername());
 
-                if (externalData == null || externalData.isEmpty()) {
+                if (externalData == null || externalData.isEmpty() || !Constant.SUCCESS.equals(externalData.get(Constant.STATUS))) {
                     logger.info("External API Token Mapper: No data returned from external API.");
+                    token.getOtherClaims().put(Constant.UNIFIED_NATIONAL_NUMBERS, "N/A");
                     return token;
                 }
 

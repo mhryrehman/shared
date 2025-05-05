@@ -42,6 +42,7 @@ public class HttpClientUtil {
 
         try (CloseableHttpResponse response = httpClient.execute(request)) {
             int statusCode = response.getStatusLine().getStatusCode();
+
             logger.infof("External API call to %s responded with status: %d", apiUrl, statusCode);
 
             if (statusCode == 200) {
@@ -51,7 +52,7 @@ public class HttpClientUtil {
                 logger.warnf("Non-successful response from external API: HTTP %d", statusCode);
             }
         } catch (IOException e) {
-            logger.errorf(e, "Exception occurred while calling external API: %s", apiUrl);
+            logger.errorf("An error occurred while calling external API: %s", apiUrl);
         }
 
         return Collections.emptyMap();
