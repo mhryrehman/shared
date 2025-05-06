@@ -52,7 +52,7 @@ public class UnifiedNationalNumberFetcherRepository {
             logger.info("Fetched " + list.size() + " national unified number(s) for userId: " + userId);
 
         } catch (Exception ex) {
-            logger.severe("Error executing stored procedure: " + ex.getMessage());
+            logger.severe("An Error occurred while executing stored procedure");
             throw new RuntimeException("Failed to fetch unified national numbers", ex);
         }
 
