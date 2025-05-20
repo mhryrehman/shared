@@ -45,9 +45,9 @@ Block login using **password grant type** unless the user's phone number has bee
 
 Use the Keycloak Admin REST API to update the `PhoneVerified` attribute for a user.
 
-### 🔐 Step 1: Get Admin Token
+### 🔐 Update User
 
-```{{keycloak_url}}/admin/realms/{{realm}}/users/d3d86d33-3b5e-44b2-881b-030cffeef85b
+```PUT {{keycloak_url}}/admin/realms/{{realm}}/users/d3d86d33-3b5e-44b2-881b-030cffeef85b
 {
     "id": "d3d86d33-3b5e-44b2-881b-030cffeef85b",
     "username": "yasir",
